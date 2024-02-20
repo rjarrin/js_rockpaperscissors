@@ -2,17 +2,24 @@ const buttons = document.querySelectorAll('button');
 let container = document.querySelector(".container");
 let text = document.createElement('p');
 
+let score = {
+    userScore : 0,
+    computerScore : 0
+}
 
+/* Main Game loop */
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
         // Have the computer select a random option
         let dealer = getComputerChoice(3);
         // Game results + Winner declaration
         let check = compareChoices(button.id, dealer);
+        // If gameText does not exist, add it to the webpage
         if(!document.getElementById("gameText")) {
             text.setAttribute("id", "gameText");
             container.appendChild(text);
         }
+        // Update game score
         if (check == 0) {
             score.userScore = score.userScore + 1;
         } else if (check == 1) {
@@ -34,6 +41,7 @@ buttons.forEach((button) => {
                 winnerText.style.cssText = 'color: red;';
                 winnerText.textContent = 'YOU LOSE!';
             }
+            // Provide final game message (within loop as buttons are removed after so multiple appends are not created)
             container.appendChild(winnerText);
             // Remove buttons once complete
             hide();
@@ -41,43 +49,14 @@ buttons.forEach((button) => {
     });
 });
 
+// Hide buttons once game is complete
 function hide() {
     buttons.forEach((button) => {
         button.style.display = 'none';
     });
 }
 
-function playGame(score) {
-    
-    /* Ask player to select their choice */
-    let hand = playerSelection();
-    console.log("Player selected \"" + hand + "\".");
-
-    /* Have the computer select a random option */
-    let dealer = getComputerChoice(3);
-    console.log("Computer selected \"" + dealer + "\".");
-
-    /* Winner declaration */
-    let check = compareChoices(hand, dealer);
-
-    if (check == 0) {
-        score.userScore = score.userScore + 1;
-    } else if (check == 1) {
-        score.computerScore = score.computerScore + 1;
-    }
-}
-
-function playerSelection() {
-    let choice = prompt("Choose a hand option (rock, paper, scissors): ");
-    choice = choice.toLowerCase();
-
-    while (choice != "rock" && choice != "paper" && choice !== "scissors") {
-        choice = prompt("Invalid input. Try again: ");
-        choice = choice.toLowerCase()
-    }
-    return choice;
-}
-
+// Retrieve the computer's random choice
 function getComputerChoice(choice) {
     let response = Math.floor(Math.random() * choice);
     if (response == 0) {
@@ -94,6 +73,7 @@ function getComputerChoice(choice) {
     }
 }
 
+// Compare user and computer hands to determine the round's winner
 function compareChoices(hand, dealer) {
     if ((hand == "rock" && dealer == "scissors") 
     || (hand == "paper" && dealer == "rock") 
@@ -115,18 +95,3 @@ function compareChoices(hand, dealer) {
         return 2;
     }
 }
-
-let score = {
-    userScore : 0,
-    computerScore : 0
-}
-
-let games = 1;
-
-/* Introduce the player to the game */
-console.log("Welcome to this Rock-Paper-Scissors Simulator");
-for (let i = 0; i < games; i++) {
-    //playGame(score);
-}
-
-console.log("Final Score (P:C) is "+score.userScore+":"+score.computerScore);
