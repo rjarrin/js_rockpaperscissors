@@ -1,21 +1,51 @@
 const buttons = document.querySelectorAll('button');
+let container = document.querySelector(".container");
+let text = document.createElement('p');
+
+
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
-        // Player selection
-        //alert(button.id);
         // Have the computer select a random option
         let dealer = getComputerChoice(3);
-        // Winner declaration
+        // Game results + Winner declaration
         let check = compareChoices(button.id, dealer);
+        if(!document.getElementById("gameText")) {
+            text.setAttribute("id", "gameText");
+            container.appendChild(text);
+        }
         if (check == 0) {
             score.userScore = score.userScore + 1;
         } else if (check == 1) {
             score.computerScore = score.computerScore + 1;
         }
         // Update the UI score
-        
+        let userScore = document.querySelector(".container #user");
+        userScore.textContent = "Player score: " +score.userScore;
+        let computerScore = document.querySelector(".container #computer");
+        computerScore.textContent = "Computer score: " +score.computerScore;
+
+        // Announce results once either player reaches 5 points
+        if (score.userScore == 5 || score.computerScore == 5) {
+            let winnerText = document.createElement('h1');
+            if (score.userScore == 5) {
+                winnerText.style.cssText = 'color: blue;';
+                winnerText.textContent = 'YOU WIN!';
+            } else if (score.computerScore == 5) {
+                winnerText.style.cssText = 'color: red;';
+                winnerText.textContent = 'YOU LOSE!';
+            }
+            container.appendChild(winnerText);
+            // Remove buttons once complete
+            hide();
+        }
     });
 });
+
+function hide() {
+    buttons.forEach((button) => {
+        button.style.display = 'none';
+    });
+}
 
 function playGame(score) {
     
@@ -68,16 +98,19 @@ function compareChoices(hand, dealer) {
     if ((hand == "rock" && dealer == "scissors") 
     || (hand == "paper" && dealer == "rock") 
     || (hand == "scissors" && dealer == "paper")) {
+        text.textContent = "You Win! " +hand+ " beats " +dealer+ ".";
         console.log("You Win! " +hand+ " beats " +dealer+ ".");
         return 0;
     }
     else if ((dealer == "rock" && hand == "scissors") 
     || (dealer == "paper" && hand == "rock") 
     || (dealer == "scissors" && hand == "paper")) {
+        text.textContent = "You Lose! " +dealer+ " beats " +hand+ ".";
         console.log("You Lose! " +dealer+ " beats " +hand+ ".");
         return 1;
     }
     else {
+        text.textContent = "Tied Game.";
         console.log("Tied Game.");
         return 2;
     }
