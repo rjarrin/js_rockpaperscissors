@@ -1,10 +1,21 @@
 const buttons = document.querySelectorAll('button');
 buttons.forEach((button) => {
     button.addEventListener('click', () => {
-        alert(button.id);
+        // Player selection
+        //alert(button.id);
+        // Have the computer select a random option
+        let dealer = getComputerChoice(3);
+        // Winner declaration
+        let check = compareChoices(button.id, dealer);
+        if (check == 0) {
+            score.userScore = score.userScore + 1;
+        } else if (check == 1) {
+            score.computerScore = score.computerScore + 1;
+        }
+        // Update the UI score
+        
     });
 });
-
 
 function playGame(score) {
     
@@ -82,7 +93,7 @@ let games = 1;
 /* Introduce the player to the game */
 console.log("Welcome to this Rock-Paper-Scissors Simulator");
 for (let i = 0; i < games; i++) {
-    playGame(score);
+    //playGame(score);
 }
 
 console.log("Final Score (P:C) is "+score.userScore+":"+score.computerScore);
