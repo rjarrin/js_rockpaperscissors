@@ -1,3 +1,11 @@
+const buttons = document.querySelectorAll('button');
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        alert(button.id);
+    });
+});
+
+
 function playGame(score) {
     
     /* Ask player to select their choice */
@@ -69,7 +77,7 @@ let score = {
     computerScore : 0
 }
 
-let games = 5;
+let games = 1;
 
 /* Introduce the player to the game */
 console.log("Welcome to this Rock-Paper-Scissors Simulator");
